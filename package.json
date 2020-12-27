@@ -1,0 +1,14 @@
+{
+  "name": "ps5-bot",
+  "version": "1.0.0",
+  "description": "Bot to help purchasing of a ps5",
+  "main": "index.js",
+  "scripts": {
+    "test": "start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.1.3"
+  }
+}
