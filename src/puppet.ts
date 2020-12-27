@@ -1,7 +1,7 @@
 import puppeteer from 'puppeteer'
 import * as dotenv from 'dotenv'
 
-const product = 'https://www.game.co.uk/en/battlefield-1-1263175';
+const product = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-wireless-controller-2835866';
 
 (async () => {
   dotenv.config()
