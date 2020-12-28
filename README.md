@@ -1,11 +1,17 @@
 # PS5Bot
 
-1. Refreshes sites until a PS5 becomes available
-2. If PS5 becomes available it sends an sms and attempts to purchase
+A tool to purchase a PS5 when available at certain sites. This was made for educational purposes and to purchase a single PS5 for myself.
 
-# Requirements
 
-This project requires some environment variables. It uses Vonage to send texts of attempted purchases so an Vonage account and API secret and key is needed.
+Currently checks the following product pages:
+- [Amazon](https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/)
+- [Game](https://www.game.co.uk/en/m/playstation-5-additional-dualsense-wireless-controller-2835866)
+
+
+
+## Requirements
+Requires Node, a Vonage Account and some environment variables.
+
 Create a `.env` file in the root of this project with the following environment variables:
 
 ```env
@@ -20,7 +26,10 @@ CARD_NUMBER
 CARD_NAME
 CARD_EXPIRY
 CARD_CVV
+
 AMAZON_PWD
+AMAZON_EMAIL
+
 VONAGE_API_SECRET
 VONAGE_API_KEY
 ```

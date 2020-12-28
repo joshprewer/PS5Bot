@@ -36,7 +36,7 @@ async function attemptPurchase(page: puppeteer.Page) {
   // Sign In
   const emailInput = await page.waitForSelector("input[type='email']")
   await emailInput.focus()
-  await page.keyboard.type(process.env.EMAIL)
+  await page.keyboard.type(process.env.AMAZON_EMAIL)
 
   const continueBtn = await page.waitForSelector("input[id='continue']")
   await continueBtn.click()
