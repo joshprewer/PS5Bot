@@ -7,7 +7,7 @@ export function sendSms (message: string) {
   })
 
   const from = 'PS5Bot'
-  const to = process.env.PHONE_NUMBER
+  const to = process.env.SMS_NUMBER
 
   nexmo.message.sendSms(from, to, message, {}, (err, responseData) => {
     if (err) {

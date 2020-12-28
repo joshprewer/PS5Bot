@@ -8,7 +8,6 @@ Currently checks the following product pages:
 - [Game](https://www.game.co.uk/en/m/playstation-5-additional-dualsense-wireless-controller-2835866)
 
 
-
 ## Requirements
 Requires Node, a Vonage Account and some environment variables.
 
