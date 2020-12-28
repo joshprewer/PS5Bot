@@ -1,9 +1,14 @@
 import puppeteer from 'puppeteer'
 import Site from './site'
+import fs from 'fs'
 
 export default class Amazon implements Site {
-  productUrl = 'https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/'
   name: string = 'Amazon'
+  productUrl: string = 'https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/'
+
+  constructor() {
+    fs.mkdirSync(`screenshots/${this.name}`, {recursive: true})
+  }
 
   async isAvailable(page: puppeteer.Page): Promise<boolean> {
     await page.goto(this.productUrl)

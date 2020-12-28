@@ -11,7 +11,8 @@ export default async function checkSite(page: puppeteer.Page, site: Site): Promi
       await site.attemptPurchase(page)
       console.log('\x1b[32m%s\x1b[0m', `Purchased PS5 at ${site.name}`)
       return true
-    } catch {
+    } catch(error) {
+      console.log(error)
       return false
     }
   } else {

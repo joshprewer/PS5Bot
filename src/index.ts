@@ -10,6 +10,8 @@ const TIMEOUT = 5 * 60 * 1000
 const sites: Site[] = [
   new Amazon(),
   new Game(),
+  new Amazon(),
+  new Game(),
 ]
 
 function sleep (timer: number): Promise<void> {

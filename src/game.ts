@@ -1,9 +1,14 @@
 import puppeteer from 'puppeteer'
 import Site from './site'
+import fs from 'fs'
 
 export default class Game implements Site {
-  productUrl = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-wireless-controller-2835866';
   name: string = 'Game'
+  productUrl:string = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-wireless-controller-2835866';
+
+  constructor() {
+    fs.mkdirSync(`screenshots/${this.name}`, {recursive: true})
+  }
 
   async isAvailable(page: puppeteer.Page): Promise<boolean> {
     await page.goto(this.productUrl)
@@ -25,8 +30,6 @@ async function attemptPurchase(page: puppeteer.Page) {
   const buyButton = await page.waitForSelector(`a[class='${ps5BundleURL}']`)
 
   await buyButton.click()
-
-  await page.screenshot({ path: 'example.png', fullPage: true })
 
   const checkoutId = 'secure-checkout'
   const checkoutButton = await page.waitForSelector(`a[class='${checkoutId}']`)
@@ -117,8 +120,6 @@ async function attemptPurchase(page: puppeteer.Page) {
   await postcodeInput.focus()
   await page.keyboard.type(process.env.POSTCODE)
 
-  await page.screenshot({ path: 'deliveryOptions.png', fullPage: true })
-
   const continueId = "button[data-test='continue-button']"
   const continueBtn = await page.waitForSelector(continueId)
 
@@ -177,8 +178,6 @@ async function attemptPurchase(page: puppeteer.Page) {
   await payBtn.click()
 
   await page.waitForTimeout(10 * 1000)
-  await page.screenshot({ path: 'example.png', fullPage: true })
-  await page.waitForTimeout(10 * 60 * 1000)
-
   await page.screenshot({ path: `screenshots/${Game.name}/confirmation.png`, fullPage: true })
+  await page.waitForTimeout(10 * 60 * 1000)
 }
