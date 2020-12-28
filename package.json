@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "nexmo": "^2.9.1",
     "puppeteer": "^5.5.0",
     "typescript": "^4.1.3"
   },

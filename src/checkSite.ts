@@ -1,15 +1,22 @@
 import puppeteer from 'puppeteer'
-import Site from './site';
+import Site from './sites/site';
+import { sendSms } from './sendSms'
 
 export default async function checkSite(page: puppeteer.Page, site: Site): Promise<boolean> {
   const isAvailable = await site.isAvailable(page);
 
   if (isAvailable) {
-    console.log('\x1b[32m%s\x1b[0m', `Attempting purchase at ${site.name}`)
+    const attemptMessage = `Attempting purchase at ${site.name}`
+    console.log('\x1b[32m%s\x1b[0m', attemptMessage)
+    sendSms(attemptMessage)
 
     try {
       await site.attemptPurchase(page)
-      console.log('\x1b[32m%s\x1b[0m', `Purchased PS5 at ${site.name}`)
+
+      const purchasedMessage = `Purchased PS5 at ${site.name}`
+      console.log('\x1b[32m%s\x1b[0m', purchasedMessage)
+      sendSms(purchasedMessage)
+
       return true
     } catch(error) {
       console.log(error)

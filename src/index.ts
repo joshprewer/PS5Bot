@@ -1,8 +1,8 @@
 import puppeteer from 'puppeteer'
 import dotenv from 'dotenv'
-import Game from './game'
-import Amazon from './amazon'
-import Site from './site'
+import Game from './sites/game'
+import Amazon from './sites/amazon'
+import Site from './sites/site'
 import checkSite from './checkSite'
 
 const TIMEOUT = 5 * 60 * 1000
