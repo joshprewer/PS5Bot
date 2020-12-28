@@ -1,37 +1,25 @@
 import puppeteer from 'puppeteer'
-import * as dotenv from 'dotenv'
+import Site from './site'
 
-const productUrl = 'https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/';
+export default class Amazon implements Site {
+  productUrl = 'https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/'
+  name: string = 'Amazon'
 
-async function isAvailable(page: puppeteer.Page): Promise<boolean> {
-  const addToCartBtn = await page.evaluate(() => {
-    return document.querySelector("input[id='add-to-cart-button']")
-  })
-  const isAvailable = addToCartBtn !== null
-  return isAvailable
-}
-
-(async () => {
-  dotenv.config()
-
-  const browser = await puppeteer.launch({ args: ['--disable-features=site-per-process', '--no-sandbox'] })
-  const page = await browser.newPage()
-  await page.goto(productUrl)
-
-  const cookieButton = await page.waitForSelector("input[id='sp-cc-accept']")
-  await cookieButton.click()
-
-  var productLive = await isAvailable(page)
-  while (!productLive) {
-    console.log('sleep')
-    await page.waitForTimeout(5 * 60 * 1000)
-    await page.goto(productUrl)
-    productLive = await isAvailable(page)
+  async isAvailable(page: puppeteer.Page): Promise<boolean> {
+    await page.goto(this.productUrl)
+    const addToCartBtn = await page.evaluate(() => {
+      return document.querySelector("input[id='add-to-cart-button']")
+    })
+    const isAvailable = addToCartBtn !== null
+    return isAvailable
   }
 
-  // Product Page
-  console.log('product page live')
+  async attemptPurchase(page: puppeteer.Page): Promise<void> {
+    await attemptPurchase(page)
+  }
+}
 
+async function attemptPurchase(page: puppeteer.Page) {
   const buyButton = await page.waitForSelector("input[id='add-to-cart-button']")
   await buyButton.click()
 
@@ -56,13 +44,11 @@ async function isAvailable(page: puppeteer.Page): Promise<boolean> {
   await signInBtn.click()
 
   await page.waitForTimeout(5 * 1000)
-  await page.screenshot({ path: 'checkout.png', fullPage: true })
+  await page.screenshot({ path: `screenshots/${Amazon.name}/checkout.png`, fullPage: true })
 
   const payBtn = await page.waitForSelector("input[title='Buy Now']")
   await payBtn.click()
 
-  await page.screenshot({ path: 'confirmation.png', fullPage: true })
+  await page.screenshot({ path: `screenshots/${Amazon.name}/confirmation.png`, fullPage: true })
   await page.waitForTimeout(3 * 60 * 1000)
-
-  await browser.close()
-})()
+}

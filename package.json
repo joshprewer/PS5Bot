@@ -4,7 +4,7 @@
   "description": "Bot to help purchasing of a ps5",
   "main": "index.js",
   "scripts": {
-    "test": "start"
+    "start": "tsc && node dist/index.js"
   },
   "author": "",
   "license": "ISC",

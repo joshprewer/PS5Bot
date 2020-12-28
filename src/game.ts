@@ -1,25 +1,21 @@
 import puppeteer from 'puppeteer'
-import * as dotenv from 'dotenv'
+import Site from './site'
 
-const product = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-wireless-controller-2835866';
+export default class Game implements Site {
+  productUrl = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-wireless-controller-2835866';
+  name: string = 'Game'
 
-(async () => {
-  dotenv.config()
-
-  const browser = await puppeteer.launch({ args: ['--disable-features=site-per-process', '--no-sandbox'] })
-  const page = await browser.newPage()
-
-  await page.goto(product)
-
-  while (page.url() !== product) {
-    console.log('sleep')
-    await page.waitForTimeout(5 * 60 * 1000)
-    await page.goto(product)
+  async isAvailable(page: puppeteer.Page): Promise<boolean> {
+    await page.goto(this.productUrl)
+    return page.url() === this.productUrl
   }
 
-  console.log('product page live')
-  // Product Page
+  async attemptPurchase(page: puppeteer.Page): Promise<void> {
+    await attemptPurchase(page)
+  }
+}
 
+async function attemptPurchase(page: puppeteer.Page) {
   const cookeAcceptId = 'cookiePolicy_inner-link accept'
   const cookieButton = await page.waitForSelector(`a[class='${cookeAcceptId}']`)
 
@@ -87,8 +83,7 @@ const product = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-
 
   await saveBtn.click()
 
-  // Delivery Address
-
+  // Delivery Details
   const manualId = 'manual-address-link'
   const manualBtn = await page.waitForSelector(`a[data-test='${manualId}']`)
 
@@ -129,15 +124,13 @@ const product = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-
 
   await continueBtn.click()
 
-  // Delivery Options
-
+  // Delivery Method
   const continuePaymentId = "button[data-test='continue-to-payment']"
   const continuePaymentBtn = await page.waitForSelector(continuePaymentId)
 
   await continuePaymentBtn.click()
 
   // Payment Options
-
   await page.waitForTimeout(2000)
   await page.frames()
 
@@ -176,16 +169,16 @@ const product = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-
 
   await page.waitForTimeout(5000)
 
+  await page.screenshot({ path: `screenshots/${Game.name}/checkout.png`, fullPage: true })
+
   const payId = "button[data-test='pay-now']"
   const payBtn = await page.waitForSelector(payId)
 
   await payBtn.click()
 
-  await page.waitForTimeout(10000)
-
+  await page.waitForTimeout(10 * 1000)
   await page.screenshot({ path: 'example.png', fullPage: true })
-
   await page.waitForTimeout(10 * 60 * 1000)
 
-  await browser.close()
-})()
+  await page.screenshot({ path: `screenshots/${Game.name}/confirmation.png`, fullPage: true })
+}
