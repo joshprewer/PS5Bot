@@ -5,7 +5,7 @@ import Amazon from './sites/amazon'
 import Site from './sites/site'
 import checkSite from './checkSite'
 
-const TIMEOUT = 2 * 60 * 1000
+const TIMEOUT = 45 * 1000
 
 const sites: Site[] = [
   new Amazon(),
