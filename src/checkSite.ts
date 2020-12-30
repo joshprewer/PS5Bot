@@ -20,6 +20,8 @@ export default async function checkSite(page: puppeteer.Page, site: Site): Promi
       return true
     } catch(error) {
       console.log(error)
+      const failedMessage = `Purchase failed at ${site.name}`
+      sendSms(failedMessage)
       return false
     }
   } else {
