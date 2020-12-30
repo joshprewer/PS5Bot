@@ -1,8 +1,9 @@
 version: '3.4'
 services:
   start:
-    build:
-      context: .
+    build: .
     command: sh -c "npm start"
+    volumes:
+      - ./screenshots:/app/screenshots
     environment:
       BUILD_ENVIRONMENT: 'dev'

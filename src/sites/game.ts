@@ -12,6 +12,7 @@ export default class Game implements Site {
 
   async isAvailable(page: puppeteer.Page): Promise<boolean> {
     await page.goto(this.productUrl)
+    await page.screenshot({ path: `screenshots/${this.name}/productPage.png`, fullPage: true })
     return page.url() === this.productUrl
   }
 

@@ -24,8 +24,8 @@ export default async function checkSite(page: puppeteer.Page, site: Site): Promi
       sendSms(failedMessage)
       return false
     }
-  } else {
-    console.log('\x1b[31m%s\x1b[0m', `PS5 is unavailable at ${site.name}`)
-    return false
   }
+
+  console.log('\x1b[31m%s\x1b[0m', `PS5 is unavailable at ${site.name}`)
+  return false
 }
