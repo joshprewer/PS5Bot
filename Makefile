@@ -4,7 +4,7 @@ rebuild:
 	docker-compose build
 
 install-dependencies:
-	rm -rf dist && npm install && npm run build
+	npm install
 
 start: install-dependencies rebuild
 	docker-compose up --exit-code-from start start
