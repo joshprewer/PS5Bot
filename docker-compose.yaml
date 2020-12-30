@@ -1,0 +1,8 @@
+version: '3'
+services:
+  start:
+    build:
+      context: .
+    command: sh -c "npm start"
+    environment:
+      BUILD_ENVIRONMENT: 'dev'
