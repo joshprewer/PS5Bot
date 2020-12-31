@@ -11,7 +11,10 @@ export default class Amazon implements Site {
   }
 
   async isAvailable(page: puppeteer.Page): Promise<boolean> {
-    await page.goto(this.productUrl)
+    await page.goto(this.productUrl, {
+      waitUntil: 'load',
+      timeout: 0
+    })
     await page.screenshot({ path: `screenshots/${this.name}/productPage.png`, fullPage: true })
 
     const addToCartBtn = await page.evaluate(() => {
