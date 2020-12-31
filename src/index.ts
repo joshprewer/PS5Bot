@@ -35,16 +35,23 @@ async function main() {
   );
 
   while (true) {
-    const results = await Promise.all(
-      pages.map((element) => checkSite(element.page, element.site))
-    );
+    try {
+      const results = await Promise.all(
+        pages.map((element) => checkSite(element.page, element.site))
+      );
 
-    if (results.filter((element) => element).length !== 0) {
-      break;
+      if (results.filter((element) => element).length !== 0) {
+        break;
+      }
+
+      console.log("------------- SLEEPING -------------");
+      await sleep(TIMEOUT);
+    } catch (error) {
+      console.log(error)
+      await browser.close()
+
+      process.abort()
     }
-
-    console.log("------------- SLEEPING -------------");
-    await sleep(TIMEOUT);
   }
 }
 

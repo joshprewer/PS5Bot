@@ -4,7 +4,7 @@ import fs from 'fs'
 
 export default class Game implements Site {
   name: string = 'Game'
-  productUrl:string = 'https://www.game.co.uk/en/m/playstation-5-additional-dualsense-wireless-controller-2835866';
+  productUrl:string = 'https://www.game.co.uk/en/m/playstation-5-console-2826338';
 
   constructor() {
     fs.mkdirSync(`screenshots/${this.name}`, {recursive: true})
