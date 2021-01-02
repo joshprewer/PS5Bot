@@ -10,7 +10,7 @@ export async function sendSms (message: string) {
   const smsParams = {
     attributes: {
       DefaultSMSType: 'Promotional',
-      DefaultSenderID: 'PS5Alerts'
+      DefaultSenderID: 'PS5Bots'
     }
   }
   const msgParams = {
