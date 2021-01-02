@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer'
-import Site from './site'
+import { Site, fillForm, clickButton } from "./site";
 import fs from 'fs'
 
 export default class Game implements Site {
@@ -53,86 +53,57 @@ async function attemptPurchase(page: puppeteer.Page) {
   // Contact Details
   const titleId = 'mat-select-trigger'
   const titleBtn = await page.waitForSelector(`div[class='${titleId}']`)
-
   await titleBtn.click()
 
   const mrId = 'mat-option-0'
   const mrBtn = await page.waitForSelector(`mat-option[id='${mrId}']`)
-
   await mrBtn.click()
 
   const nameId = 'mat-input-0'
-  const nameForm = await page.waitForSelector(`input[id='${nameId}']`)
-
-  await nameForm.focus()
-  await page.keyboard.type(process.env.FIRST_NAME)
+  await fillForm(nameId, process.env.FIRST_NAME, page)
 
   const lastNameId = 'mat-input-1'
-  const lastNameForm = await page.waitForSelector(`input[id='${lastNameId}']`)
-
-  await lastNameForm.focus()
-  await page.keyboard.type(process.env.LAST_NAME)
+  await fillForm(lastNameId, process.env.LAST_NAME, page)
 
   const emailId = 'mat-input-2'
-  const emailForm = await page.waitForSelector(`input[id='${emailId}']`)
-
-  await emailForm.focus()
-  await page.keyboard.type(process.env.EMAIL)
+  await fillForm(emailId, process.env.EMAIL, page)
 
   const phoneId = 'mat-input-3'
-  const phoneForm = await page.waitForSelector(`input[id='${phoneId}']`)
-
-  await phoneForm.focus()
-  await page.keyboard.type(process.env.PHONE_NUMBER)
+  await fillForm(phoneId, process.env.PHONE_NUMBER, page)
 
   const saveId = 'submit'
   const saveBtn = await page.waitForSelector(`button[type='${saveId}']`)
-
   await saveBtn.click()
 
   // Delivery Details
   const manualId = 'manual-address-link'
   const manualBtn = await page.waitForSelector(`a[data-test='${manualId}']`)
-
   await manualBtn.click()
 
   const countrySelectId = "mat-form-field[data-test='country-input']"
   const countrySelectBtn = await page.waitForSelector(countrySelectId)
-
   await countrySelectBtn.click()
 
   const ukId = "mat-option[id='mat-option-6']"
   const ukBtn = await page.waitForSelector(ukId)
-
   await ukBtn.click()
 
   const addresLine1Id = "input[data-test='address-line-1']"
-  const addresLine1IdInput = await page.waitForSelector(addresLine1Id)
-
-  await addresLine1IdInput.focus()
-  await page.keyboard.type(process.env.ADDRESS_LINE_1)
+  await fillForm(addresLine1Id, process.env.ADDRESS_LINE_1, page)
 
   const townId = "input[data-test='town']"
-  const townInput = await page.waitForSelector(townId)
-
-  await townInput.focus()
-  await page.keyboard.type(process.env.TOWN)
+  await fillForm(townId, process.env.TOWN, page)
 
   const postcodeId = "input[data-test='post-code']"
-  const postcodeInput = await page.waitForSelector(postcodeId)
-
-  await postcodeInput.focus()
-  await page.keyboard.type(process.env.POSTCODE)
+  await fillForm(postcodeId, process.env.POSTCODE, page)
 
   const continueId = "button[data-test='continue-button']"
   const continueBtn = await page.waitForSelector(continueId)
-
   await continueBtn.click()
 
   // Delivery Method
   const continuePaymentId = "button[data-test='continue-to-payment']"
   const continuePaymentBtn = await page.waitForSelector(continuePaymentId)
-
   await continuePaymentBtn.click()
 
   // Payment Options
@@ -148,26 +119,16 @@ async function attemptPurchase(page: puppeteer.Page) {
       await page.keyboard.type(process.env.CARD_NUMBER)
 
       const cardNameId = "input[formcontrolname='name']"
-      const cardNameInput = await page.waitForSelector(cardNameId)
-
-      await cardNameInput.focus()
-      await page.keyboard.type(process.env.CARD_NAME)
+      await fillForm(cardNameId, process.env.CARD_NAME, page)
 
       const cardExpiryId = "input[formcontrolname='expiryDate']"
-      const cardExpiryInput = await page.waitForSelector(cardExpiryId)
-
-      await cardExpiryInput.focus()
-      await page.keyboard.type(process.env.CARD_EXPIRY)
+      await fillForm(cardExpiryId, process.env.CARD_EXPIRY, page)
 
       const cardCVVId = "input[formcontrolname='cvv']"
-      const cardCVVInput = await page.waitForSelector(cardCVVId)
-
-      await cardCVVInput.focus()
-      await page.keyboard.type(process.env.CARD_CVV)
+      await fillForm(cardCVVId, process.env.CARD_CVV, page)
 
       const confirmCardId = "button[data-test='confirm-card']"
       const confirmCardBtn = await page.waitForSelector(confirmCardId)
-
       await confirmCardBtn.click()
     }
   }

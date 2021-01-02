@@ -2,7 +2,8 @@ import puppeteer from "puppeteer";
 import dotenv from "dotenv";
 import Game from "./sites/game";
 import Amazon from "./sites/amazon";
-import Site from "./sites/site";
+import JohnLewis from "./sites/john-lewis";
+import {Site} from "./sites/site";
 import checkSite from "./checkSite";
 
 const TIMEOUT = 45 * 1000;

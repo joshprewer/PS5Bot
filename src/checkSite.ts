@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer'
-import Site from './sites/site';
+import { Site } from './sites/site';
 import { sendSms } from './sendSms'
 
 export default async function checkSite(page: puppeteer.Page, site: Site): Promise<boolean> {

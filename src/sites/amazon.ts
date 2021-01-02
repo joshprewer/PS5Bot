@@ -1,5 +1,5 @@
 import puppeteer from 'puppeteer'
-import Site from './site'
+import { Site, clickButton } from './site'
 import fs from 'fs'
 
 export default class Amazon implements Site {
@@ -25,11 +25,11 @@ export default class Amazon implements Site {
   }
 
   async attemptPurchase(page: puppeteer.Page): Promise<void> {
-    const cookiesBtn = await page.waitForSelector('#sp-cc-accept')
-    await cookiesBtn.click()
+    const cookiesId = '#sp-cc-accept'
+    await clickButton(cookiesId, page)
 
-    const buyButton = await page.waitForSelector("input[id='add-to-cart-button']")
-    await buyButton.click()
+    const buyBtnId = "input[id='add-to-cart-button']"
+    await clickButton(buyBtnId, page)
 
     if (page.url() === this.productUrl) {
       await page.waitForTimeout(3 * 1000)
