@@ -2,13 +2,13 @@ import puppeteer from "puppeteer";
 import dotenv from "dotenv";
 import Game from "./sites/game";
 import Amazon from "./sites/amazon";
-import JohnLewis from "./sites/john-lewis";
+import Currys from "./sites/currys";
 import {Site} from "./sites/site";
 import checkSite from "./checkSite";
 
 const TIMEOUT = 45 * 1000;
 
-const sites: Site[] = [new Amazon(), new Game()];
+const sites: Site[] = [new Currys(), new Amazon(), new Game()];
 
 function sleep(timer: number): Promise<void> {
   return new Promise<void>((resolve) => setTimeout(() => resolve(), timer));
@@ -17,6 +17,7 @@ function sleep(timer: number): Promise<void> {
 async function main() {
   dotenv.config();
   const browser = await puppeteer.launch({
+    // headless: false,
     args: [
       "--disable-features=site-per-process",
       "--no-sandbox",
@@ -25,33 +26,25 @@ async function main() {
     ],
   });
 
-  const pages = await Promise.all(
-    sites.map(async (site) => {
-      const page = await browser.newPage();
-      return {
-        site,
-        page,
-      };
-    })
-  );
+ const page = await browser.newPage()
 
   while (true) {
     try {
-      const results = await Promise.all(
-        pages.map((element) => checkSite(element.page, element.site))
-      );
-
-      if (results.filter((element) => element).length !== 0) {
-        break;
+      for (const site of sites) {
+        const success = await checkSite(page, site)
+        if (success) {
+          await browser.close();
+          process.abort()
+        }
       }
 
       console.log("------------- SLEEPING -------------");
       await sleep(TIMEOUT);
     } catch (error) {
-      console.log(error)
-      await browser.close()
+      console.log(error);
+      await browser.close();
 
-      process.abort()
+      process.abort();
     }
   }
 }

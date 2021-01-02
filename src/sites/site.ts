@@ -15,5 +15,5 @@ export async function clickButton(selector: string, page: puppeteer.Page) {
 export async function fillForm(selector: string, text: string, page: puppeteer.Page) {
   const input = await page.waitForSelector(selector);
   await input.focus();
-  await page.keyboard.type(text);
+  await page.keyboard.type(text, {delay: 10});
 }
