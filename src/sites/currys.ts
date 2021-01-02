@@ -100,6 +100,7 @@ export default class Currys implements Site {
     await page.screenshot({ path: `screenshots/${this.name}/checkout.png`, fullPage: true })
 
     await page.keyboard.press("Enter");
+    await page.waitForTimeout(10 * 60 * 1000)
 
     await page.screenshot({ path: `screenshots/${this.name}/confirmation.png`, fullPage: true })
   }
