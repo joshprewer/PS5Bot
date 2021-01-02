@@ -1,25 +1,34 @@
-import Nexmo from 'nexmo'
+import aws from 'aws-sdk'
 
-export function sendSms (message: string) {
-  const nexmo = new Nexmo({
-    apiKey: process.env.VONAGE_API_KEY,
-    apiSecret: process.env.VONAGE_API_SECRET
+export async function sendSms (message: string) {
+  aws.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION
   })
 
-  const from = 'PS5Bot'
-  const to = process.env.SMS_NUMBER
-
-  nexmo.message.sendSms(from, to, message, {}, (err, responseData) => {
-    if (err) {
-      console.log(err)
-    } else {
-      if (responseData.messages[0].status === '0') {
-        console.log('Message sent successfully.')
-      } else {
-        console.log(
-          `Message failed with error: ${responseData.messages[0].status}`
-        )
-      }
+  const smsParams = {
+    attributes: {
+      DefaultSMSType: 'Promotional',
+      DefaultSenderID: 'PS5Alerts'
     }
-  })
+  }
+  const msgParams = {
+    Message: message,
+    PhoneNumber: process.env.PHONE_NUMBER
+  }
+
+  const setSMSType = new aws.SNS({ apiVersion: '2010-03-31' })
+    .setSMSAttributes(smsParams)
+    .promise()
+  const publishText = new aws.SNS({ apiVersion: '2010-03-31' })
+    .publish(msgParams)
+    .promise()
+
+  try {
+    await setSMSType
+    await publishText
+  } catch (error) {
+    console.log(error)
+  }
 }
