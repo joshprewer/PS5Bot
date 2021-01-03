@@ -94,7 +94,7 @@ export default class Smyths implements Site {
     await page.keyboard.press('Enter')
 
     await page.keyboard.press('Tab')
-    await page.keyboard.type('123')
+    await page.keyboard.type(process.env.CARD_CVV)
 
     const checkboxId = '#accordion > div > div > div > div.panel-body > div:nth-child(3) > div > div > label:nth-child(1)'
     await clickButton(checkboxId, page)

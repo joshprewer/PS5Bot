@@ -24,6 +24,10 @@ async function main() {
       "--disable-setuid-sandbox",
       "--disable-dev-shm-usage",
     ],
+    defaultViewport: {
+      width: 1680,
+      height: 1050,
+    },
   });
 
  const page = await browser.newPage()
