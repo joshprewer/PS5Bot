@@ -3,12 +3,13 @@ import dotenv from "dotenv";
 import Game from "./sites/game";
 import Amazon from "./sites/amazon";
 import Currys from "./sites/currys";
+import Smyths from "./sites/smyths";
 import {Site} from "./sites/site";
 import checkSite from "./checkSite";
 
 const TIMEOUT = 45 * 1000;
 
-const sites: Site[] = [new Currys(), new Amazon(), new Game()];
+const sites: Site[] = [new Currys(), new Amazon(), new Game(), new Smyths()];
 
 function sleep(timer: number): Promise<void> {
   return new Promise<void>((resolve) => setTimeout(() => resolve(), timer));
@@ -17,7 +18,6 @@ function sleep(timer: number): Promise<void> {
 async function main() {
   dotenv.config();
   const browser = await puppeteer.launch({
-    // headless: false,
     args: [
       "--disable-features=site-per-process",
       "--no-sandbox",
