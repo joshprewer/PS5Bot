@@ -1,10 +1,11 @@
 import aws from 'aws-sdk'
+import { SMSConfig } from './config'
 
-export async function sendSms (message: string) {
+export async function sendSms (message: string, config: SMSConfig) {
   aws.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
+    accessKeyId: config.accessKeyId,
+    secretAccessKey: config.secretAccessKey,
+    region: config.region
   })
 
   const smsParams = {
@@ -13,9 +14,10 @@ export async function sendSms (message: string) {
       DefaultSenderID: 'PS5Bots'
     }
   }
+
   const msgParams = {
     Message: message,
-    PhoneNumber: process.env.PHONE_NUMBER
+    PhoneNumber: config.smsNumber
   }
 
   const setSMSType = new aws.SNS({ apiVersion: '2010-03-31' })

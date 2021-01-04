@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer'
 import { Site, clickButton } from './site'
 import fs from 'fs'
+import { Config } from '../config'
 
 export default class Amazon implements Site {
   name: string = 'Amazon'
@@ -24,7 +25,7 @@ export default class Amazon implements Site {
     return isAvailable
   }
 
-  async attemptPurchase(page: puppeteer.Page): Promise<void> {
+  async attemptPurchase(page: puppeteer.Page, config: Config): Promise<void> {
     const cookiesId = '#sp-cc-accept'
     await clickButton(cookiesId, page)
 
@@ -46,14 +47,14 @@ export default class Amazon implements Site {
     // Sign In
     const emailInput = await page.waitForSelector("input[type='email']")
     await emailInput.focus()
-    await page.keyboard.type(process.env.AMAZON_EMAIL)
+    await page.keyboard.type(config.amazonCredentials.username)
 
     const continueBtn = await page.waitForSelector("input[id='continue']")
     await continueBtn.click()
 
     const passwordInput = await page.waitForSelector("input[type='password']")
     await passwordInput.focus()
-    await page.keyboard.type(process.env.AMAZON_PWD)
+    await page.keyboard.type(config.amazonCredentials.password)
 
     const signInBtn = await page.waitForSelector("input[id='signInSubmit']")
     await signInBtn.click()

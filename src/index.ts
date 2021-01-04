@@ -6,6 +6,7 @@ import Currys from "./sites/currys";
 import Smyths from "./sites/smyths";
 import {Site} from "./sites/site";
 import checkSite from "./checkSite";
+import defaultConfig from "./config"
 
 const TIMEOUT = 45 * 1000;
 
@@ -16,7 +17,7 @@ function sleep(timer: number): Promise<void> {
 }
 
 async function main() {
-  dotenv.config();
+
   const browser = await puppeteer.launch({
     args: [
       "--disable-features=site-per-process",
@@ -35,7 +36,7 @@ async function main() {
   while (true) {
     try {
       for (const site of sites) {
-        const success = await checkSite(page, site)
+        const success = await checkSite(page, site, defaultConfig)
         if (success) {
           await browser.close();
           process.abort()

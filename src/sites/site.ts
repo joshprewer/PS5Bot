@@ -1,10 +1,11 @@
 import puppeteer from 'puppeteer'
+import { Config } from '../config';
 
 export interface Site {
   name: string;
   productUrl: string;
   isAvailable(page: puppeteer.Page): Promise<boolean>;
-  attemptPurchase(page: puppeteer.Page): Promise<void> ;
+  attemptPurchase(page: puppeteer.Page, config: Config): Promise<void> ;
 }
 
 export async function clickButton(selector: string, page: puppeteer.Page) {

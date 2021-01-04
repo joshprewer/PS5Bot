@@ -1,6 +1,7 @@
 import puppeteer from 'puppeteer'
 import { Site, clickButton, fillForm } from './site'
 import fs from 'fs'
+import { Config } from '../config'
 
 export default class Currys implements Site {
   name: string = 'Currys'
@@ -25,7 +26,7 @@ export default class Currys implements Site {
     return page.url() !== this.redirectUrl
   }
 
-  async attemptPurchase(page: puppeteer.Page): Promise<void> {
+  async attemptPurchase(page: puppeteer.Page, config: Config): Promise<void> {
     try {
       const addBasketId = '#product-actions > div.channels.space-b > div.space-b.center > button'
       await clickButton(addBasketId, page)
@@ -40,7 +41,7 @@ export default class Currys implements Site {
     await btn.click()
 
     const postCodeId = '#delivery_location > input[type=search]'
-    await fillForm(postCodeId, process.env.POSTCODE, page)
+    await fillForm(postCodeId, config.deliveryAddress.postcode, page)
 
     await page.waitForTimeout(1000)
     await page.keyboard.press("Enter");
@@ -49,7 +50,7 @@ export default class Currys implements Site {
     await clickButton(deliverId, page)
 
     const emailId = 'input[data-di-field-id="email"]'
-    await fillForm(emailId, process.env.EMAIL, page)
+    await fillForm(emailId, config.personalDetails.email, page)
     await page.waitForTimeout(1000)
     await page.keyboard.press("Enter");
 
@@ -60,23 +61,23 @@ export default class Currys implements Site {
     await clickButton(mrId, page)
 
     await page.keyboard.press("Tab");
-    await page.keyboard.type(process.env.FIRST_NAME);
+    await page.keyboard.type(config.personalDetails.firstName);
 
     await page.keyboard.press("Tab");
-    await page.keyboard.type(process.env.LAST_NAME);
+    await page.keyboard.type(config.personalDetails.lastName);
 
     await page.keyboard.press("Tab");
-    await page.keyboard.type(process.env.PHONE_NUMBER);
-
-    await page.keyboard.press("Tab");
-    await page.keyboard.press("Tab");
-    await page.keyboard.press("Tab");
-    await page.keyboard.press("Tab");
-    await page.keyboard.type(process.env.ADDRESS_LINE_1);
+    await page.keyboard.type(config.personalDetails.phoneNumber);
 
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
-    await page.keyboard.type(process.env.TOWN);
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await page.keyboard.type(config.deliveryAddress.lineOne);
+
+    await page.keyboard.press("Tab");
+    await page.keyboard.press("Tab");
+    await page.keyboard.type(config.deliveryAddress.town);
 
     await page.keyboard.press("Tab");
     await page.keyboard.press("Tab");
@@ -88,14 +89,14 @@ export default class Currys implements Site {
     await clickButton(cardId, page)
 
     const cardNumberId = 'input[id="cardNumber"]'
-    await fillForm(cardNumberId, process.env.CARD_NUMBER, page)
+    await fillForm(cardNumberId, config.cardDetails.number, page)
 
     await page.keyboard.press("Tab")
-    await page.keyboard.type(process.env.CARD_NAME)
+    await page.keyboard.type(config.cardDetails.name)
 
     await page.keyboard.press("Tab");
-    await page.keyboard.type(process.env.CARD_EXPIRY)
-    await page.keyboard.type(process.env.CARD_CVV)
+    await page.keyboard.type(config.cardDetails.expiry)
+    await page.keyboard.type(config.cardDetails.cvv)
 
     await page.screenshot({ path: `screenshots/${this.name}/checkout.png`, fullPage: true })
 
