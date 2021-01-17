@@ -14,7 +14,7 @@ export default class Smyths implements Site {
 
   async isAvailable(page: puppeteer.Page): Promise<boolean> {
     await page.goto(this.productUrl, {
-      waitUntil: "networkidle0",
+      waitUntil: "load",
       timeout: 0,
     });
     await page.screenshot({

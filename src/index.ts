@@ -32,6 +32,7 @@ async function main() {
   });
 
  const page = await browser.newPage()
+ await page.setDefaultNavigationTimeout(60 * 1000)
 
   while (true) {
     try {
