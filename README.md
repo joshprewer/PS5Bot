@@ -1,4 +1,4 @@
-# PS5Alerts
+# PS5Bot
 
 A tool to purchase a PS5 when available at certain sites. This was made for educational purposes and to purchase a single PS5 for myself.
 
